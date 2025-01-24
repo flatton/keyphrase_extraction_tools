@@ -1,7 +1,6 @@
 import re
 import unicodedata
 from logging import Logger
-from typing import Callable
 
 import neologdn
 
@@ -15,8 +14,6 @@ class TextPreprocessor:
     Attributes:
         strongly_normalize (bool): If True, applies additional strong normalization
                                    by converting text to lowercase and removing spaces.
-        neologdn_normalize (Callable[[str], str]): A callable to apply neologdn
-                                                   normalization on text.
         logger (Logger | None): Optional logger instance for logging processing steps.
     """
 
@@ -33,7 +30,6 @@ class TextPreprocessor:
             logger (Logger | None): Logger instance for logging or None for no logging.
         """
         self.strongly_normalize = strongly_normalize
-        self.neologdn_normalize: Callable[[str], str] = neologdn.normalize  # type: ignore
         self.logger = logger
 
     def run(self, text: str) -> str:
@@ -74,7 +70,7 @@ class TextPreprocessor:
         text = re.sub(r" +", " ", text)
         text = re.sub(r"\n+", "\n", text)
         text = unicodedata.normalize("NFKC", text)
-        text = self.neologdn_normalize(text)
+        text = neologdn.normalize(text)
         return text
 
     def _strongly_normalize(self, text: str) -> str:
