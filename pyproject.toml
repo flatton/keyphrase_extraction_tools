@@ -75,6 +75,7 @@ order-by-type = true
 
 [tool.pyright]
 pythonVersion = "3.10"
+stubPath = "module/src/typings"
 include = ["**/module/src/*", "**/tests/*"]
 ignore = ["**/__init__.py", "*.md"]
 reportMissingTypeStubs = false
