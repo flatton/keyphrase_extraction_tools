@@ -24,5 +24,5 @@ pyright-check:
 
 # development
 install-kernel:
-	poetry install \
+	poetry install
 	poetry run python -m ipykernel install --user --name $(PROJECT_NAME) --display-name "Python ($(PROJECT_NAME))"
