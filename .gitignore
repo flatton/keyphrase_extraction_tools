@@ -178,8 +178,6 @@ cython_debug/
 # Mac OS
 .DS_Store
 
-dataset/*
-!dataset/.gitkeep
 output/*
 !output/.gitkeep
 
