@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "keyphrase_extractors"
+version = "0.1.0"
+description = "Keyphrase extraction tools in Japanese"
+authors = ["flatton <flatton211@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "keyphrase_extractors", from = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
