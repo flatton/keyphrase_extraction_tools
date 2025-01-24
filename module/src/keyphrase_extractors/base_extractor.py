@@ -30,7 +30,7 @@ class BaseExtractor:
     def __init__(
         self,
         stop_words: set[str] | Path | None = None,
-        max_characters: int = 30,
+        max_characters: int | None = None,
         flat_output: bool = True,
         use_order: bool = False,
         rrf_k: int = 60,
@@ -43,13 +43,15 @@ class BaseExtractor:
         Args:
             stop_words (set[str] | Path | None): Stop words to filter, provided as a set
                                                  or file path.
-            max_characters (int): Maximum number of characters per chunk of text.
+            max_characters (int | None): Maximum number of characters per chunk of text.
             flat_output (bool): Whether to flatten the output keyphrase structure.
             use_order (bool): Whether to consider the order of keyphrases when ranking.
             rrf_k (int): Parameter for Reciprocal Rank Fusion (RRF) scoring.
             logger (Logger | None): Logger instance for logging or None for no logging.
         """
-        # Japanese Stopwors
+        self.logger = logger
+
+        # Load Japanese Stopwors
         if stop_words:
             if isinstance(stop_words, Path):
                 self.stop_words = self._get_stopword_list(
@@ -59,12 +61,12 @@ class BaseExtractor:
                 self.stop_words = stop_words
         else:
             self.stop_words = self._get_stopword_list()
+
         self.max_characters = max_characters
         self.preprocessor = TextPreprocessor()
         self.use_order = use_order
         self.rrf_k = rrf_k
         self.flat_output = flat_output
-        self.logger = logger
 
     def _get_stopword_list(
         self, stop_words_filepath: Path = PARENT_DIRPATH / "stop_words.txt"
@@ -118,7 +120,7 @@ class BaseExtractor:
                 if space_position:
                     end = space_position.end()
                 else:
-                    end = self.max_characters - 1
+                    end = max_characters - 1
 
             chunked_texts.append(text[: end + 1])
             text = text[end + 1 :].lstrip()
