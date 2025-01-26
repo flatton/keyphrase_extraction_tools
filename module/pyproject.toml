@@ -19,6 +19,8 @@ unidic-lite = "^1.0.8"
 scipy-stubs = "^1.15.1.0"
 langrila = { extras = ["openai"], version = "^1.2.1" }
 python-dotenv = "^1.0.1"
+rapidfuzz = "^3.11.0"
+pandas-stubs = "^2.2.3.241126"
 
 [build-system]
 requires = ["poetry-core"]
