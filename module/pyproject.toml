@@ -17,6 +17,8 @@ sentencepiece = "^0.2.0"
 fugashi = "^1.4.0"
 unidic-lite = "^1.0.8"
 scipy-stubs = "^1.15.1.0"
+langrila = { extras = ["openai"], version = "^1.2.1" }
+python-dotenv = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core"]
