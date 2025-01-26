@@ -1,5 +1,5 @@
 # License
-Various data and scripts are available under the following licenses.
+各種データおよびソースコードのライセンスは以下の通りです。
 
 ## `/dataset`
 ### `/dataset.json`
@@ -7,8 +7,8 @@ Various data and scripts are available under the following licenses.
 
 ### `/label.json`
 Apache License Version 2.0
-For details, see `/dataset/evaluation/LICENSE`.
+詳細は [`/dataset/evaluation/LICENSE`](dataset/evaluation/LICENSE) をご参照ください。
 
 ## `/module/`
 Apache License Version 2.0
-For details, see `/module/LICENSE`.
+詳細は [`/module/LICENSE`](module/LICENSE) をご参照ください。

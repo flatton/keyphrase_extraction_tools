@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Experimentation using japanese_keyphrase_extractors"
 authors = ["flatton <flatton211@gmail.com>"]
 readme = "README.md"
+license = { file = "LICENSE.md" }
 package-mode = false
 
 [tool.poetry.dependencies]
