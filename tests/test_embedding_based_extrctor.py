@@ -1,4 +1,6 @@
+import logging
 import re
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 from keyphrase_extractors import (
@@ -8,6 +10,38 @@ from keyphrase_extractors import (
 )
 from keyphrase_extractors.embedding_based import SentenceEmbeddingBasedExtractionConfig
 
+
+def setup_logger(log_file: str = "../output/logs/test.log") -> logging.Logger:
+    # ロガーを作成
+    logger = logging.getLogger("MyLogger")
+    logger.setLevel(logging.DEBUG)  # ログレベルを設定（最も詳細なDEBUG）
+
+    # フォーマッタの設定
+    formatter = logging.Formatter(
+        fmt="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+
+    # コンソールハンドラーの設定
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)  # INFO以上を出力
+    console_handler.setFormatter(formatter)
+
+    # ファイルハンドラーの設定（ローテーションファイル）
+    file_handler = RotatingFileHandler(
+        log_file, maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+    )
+    file_handler.setLevel(logging.DEBUG)  # DEBUG以上を出力
+    file_handler.setFormatter(formatter)
+
+    # ハンドラーをロガーに追加
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+
+    return logger
+
+
+logger = setup_logger()
 
 input_text_filepath = Path("../dataset/sample/ABEJA_Techblog.md")
 with input_text_filepath.open("r") as f:
@@ -43,6 +77,7 @@ extractor = SentenceEmbeddingBasedExtractor(
     stop_words=None,
     flat_output=True,
     use_order=False,
+    logger=logger,
 )
 keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
 print("hotchpotch/static-embedding-japanese")
@@ -78,8 +113,197 @@ extractor = SentenceEmbeddingBasedExtractor(
     stop_words=None,
     flat_output=True,
     use_order=False,
+    logger=logger,
 )
 keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
 print("cl-nagoya/ruri-base")
+print(keyphrases.keyphrases)
+print("-" * 80)
+
+
+extraction_config = SentenceEmbeddingBasedExtractionConfig(
+    diversity_mode="normal",  # "normal", "use_maxsum", "use_mmr"
+    # nr_candidates=30,
+    # diversity=0.7,
+    max_filtered_phrases=30,
+    max_filtered_sentences=30,
+    threshold=None,
+    filter_sentences=False,
+    grammar_phrasing=False,
+    ngram_range=(1, 4),
+    use_masked_distance=False,
+)
+extractor = SentenceEmbeddingBasedExtractor(
+    model_config=embedding_model_config,
+    extraction_config=extraction_config,
+    max_characters=None,
+    stop_words=None,
+    flat_output=True,
+    use_order=False,
+    logger=logger,
+)
+keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
+print("ngram_range=(1, 4)")
+print(keyphrases.keyphrases)
+print("-" * 80)
+
+
+extraction_config = SentenceEmbeddingBasedExtractionConfig(
+    diversity_mode="normal",  # "normal", "use_maxsum", "use_mmr"
+    # nr_candidates=30,
+    # diversity=0.7,
+    max_filtered_phrases=30,
+    max_filtered_sentences=30,
+    threshold=None,
+    filter_sentences=False,
+    grammar_phrasing=True,
+    ngram_range=None,
+    use_masked_distance=False,
+)
+extractor = SentenceEmbeddingBasedExtractor(
+    model_config=embedding_model_config,
+    extraction_config=extraction_config,
+    max_characters=None,
+    stop_words=None,
+    flat_output=True,
+    use_order=False,
+    logger=logger,
+)
+keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
+print("grammar_phrasing=True")
+print(keyphrases.keyphrases)
+print("-" * 80)
+
+
+extraction_config = SentenceEmbeddingBasedExtractionConfig(
+    diversity_mode="normal",  # "normal", "use_maxsum", "use_mmr"
+    # nr_candidates=30,
+    # diversity=0.74,
+    max_filtered_phrases=30,
+    max_filtered_sentences=30,
+    threshold=None,
+    filter_sentences=True,
+    grammar_phrasing=False,
+    ngram_range=(1, 4),
+    use_masked_distance=False,
+)
+extractor = SentenceEmbeddingBasedExtractor(
+    model_config=embedding_model_config,
+    extraction_config=extraction_config,
+    max_characters=None,
+    stop_words=None,
+    flat_output=True,
+    use_order=False,
+    logger=logger,
+)
+keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
+print("ngram_range=(1, 4), filter_sentences=True")
+print(keyphrases.keyphrases)
+print("-" * 80)
+
+
+extraction_config = SentenceEmbeddingBasedExtractionConfig(
+    diversity_mode="normal",  # "normal", "use_maxsum", "use_mmr"
+    # nr_candidates=30,
+    # diversity=0.7,
+    max_filtered_phrases=30,
+    max_filtered_sentences=30,
+    threshold=None,
+    filter_sentences=True,
+    grammar_phrasing=True,
+    ngram_range=None,
+    use_masked_distance=False,
+)
+extractor = SentenceEmbeddingBasedExtractor(
+    model_config=embedding_model_config,
+    extraction_config=extraction_config,
+    max_characters=None,
+    stop_words=None,
+    flat_output=True,
+    use_order=False,
+    logger=logger,
+)
+keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
+print("grammar_phrasing=True, filter_sentences=True")
+print(keyphrases.keyphrases)
+print("-" * 80)
+
+
+extraction_config = SentenceEmbeddingBasedExtractionConfig(
+    diversity_mode="normal",  # "normal", "use_maxsum", "use_mmr"
+    # nr_candidates=30,
+    # diversity=0.7,
+    max_filtered_phrases=30,
+    max_filtered_sentences=30,
+    threshold=None,
+    filter_sentences=True,
+    grammar_phrasing=True,
+    ngram_range=None,
+    use_masked_distance=True,
+)
+extractor = SentenceEmbeddingBasedExtractor(
+    model_config=embedding_model_config,
+    extraction_config=extraction_config,
+    max_characters=None,
+    stop_words=None,
+    flat_output=True,
+    use_order=False,
+    logger=logger,
+)
+keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
+print("grammar_phrasing=True, filter_sentences=True, use_masked_distance=True")
+print(keyphrases.keyphrases)
+print("-" * 80)
+
+
+extraction_config = SentenceEmbeddingBasedExtractionConfig(
+    diversity_mode="normal",  # "normal", "use_maxsum", "use_mmr"
+    # nr_candidates=30,
+    # diversity=0.7,
+    max_filtered_phrases=30,
+    max_filtered_sentences=30,
+    threshold=None,
+    filter_sentences=True,
+    grammar_phrasing=True,
+    ngram_range=None,
+    use_masked_distance=False,
+    add_source_text=True,
+)
+extractor = SentenceEmbeddingBasedExtractor(
+    model_config=embedding_model_config,
+    extraction_config=extraction_config,
+    max_characters=None,
+    stop_words=None,
+    flat_output=True,
+    use_order=False,
+)
+keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
+print("grammar_phrasing=True, filter_sentences=True, add_source_text=True")
+print(keyphrases.keyphrases)
+print("-" * 80)
+
+
+extraction_config = SentenceEmbeddingBasedExtractionConfig(
+    diversity_mode="use_mmr",  # "normal", "use_maxsum", "use_mmr"
+    # nr_candidates=30,
+    diversity=0.7,
+    max_filtered_phrases=30,
+    max_filtered_sentences=30,
+    threshold=None,
+    filter_sentences=True,
+    grammar_phrasing=True,
+    ngram_range=None,
+    use_masked_distance=False,
+)
+extractor = SentenceEmbeddingBasedExtractor(
+    model_config=embedding_model_config,
+    extraction_config=extraction_config,
+    max_characters=None,
+    stop_words=None,
+    flat_output=True,
+    use_order=False,
+)
+keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
+print("grammar_phrasing=True, filter_sentences=True, diversity_mode='use_mmr'")
 print(keyphrases.keyphrases)
 print("-" * 80)

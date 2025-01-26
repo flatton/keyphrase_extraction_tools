@@ -1,4 +1,6 @@
+import logging
 import re
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 from keyphrase_extractors import ClassicalExtractor
@@ -12,6 +14,38 @@ from pke.unsupervised import (
     TopicRank,
 )
 
+
+def setup_logger(log_file: str = "../output/logs/test.log") -> logging.Logger:
+    # ロガーを作成
+    logger = logging.getLogger("MyLogger")
+    logger.setLevel(logging.DEBUG)  # ログレベルを設定（最も詳細なDEBUG）
+
+    # フォーマッタの設定
+    formatter = logging.Formatter(
+        fmt="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+
+    # コンソールハンドラーの設定
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)  # INFO以上を出力
+    console_handler.setFormatter(formatter)
+
+    # ファイルハンドラーの設定（ローテーションファイル）
+    file_handler = RotatingFileHandler(
+        log_file, maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+    )
+    file_handler.setLevel(logging.DEBUG)  # DEBUG以上を出力
+    file_handler.setFormatter(formatter)
+
+    # ハンドラーをロガーに追加
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+
+    return logger
+
+
+logger = setup_logger()
 
 input_text_filepath = Path("../dataset/sample/ABEJA_Techblog.md")
 with input_text_filepath.open("r") as f:
@@ -32,6 +66,7 @@ extractor = ClassicalExtractor(
     },
     flat_output=True,
     use_order=False,
+    logger=logger,
 )
 keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
 print("TextRank")
@@ -51,6 +86,7 @@ extractor = ClassicalExtractor(
     },
     flat_output=True,
     use_order=False,
+    logger=logger,
 )
 keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
 print("SingleRank")
@@ -70,6 +106,7 @@ extractor = ClassicalExtractor(
     },
     flat_output=True,
     use_order=False,
+    logger=logger,
 )
 keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
 print("TopicRank")
@@ -85,6 +122,7 @@ extractor = ClassicalExtractor(
     args_candidate_weighting={"threshold": 0.7, "method": "average", "alpha": 1.1},
     flat_output=True,
     use_order=False,
+    logger=logger,
 )
 keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
 print("MultipartiteRank")
@@ -99,6 +137,7 @@ extractor = ClassicalExtractor(
     args_candidate_weighting={"df": None},
     flat_output=True,
     use_order=False,
+    logger=logger,
 )
 keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
 print("TfIdf")
@@ -113,6 +152,7 @@ extractor = ClassicalExtractor(
     args_candidate_weighting={"df": None, "sigma": 3.0, "alpha": 2.3},
     flat_output=True,
     use_order=False,
+    logger=logger,
 )
 keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
 print("KPMiner")
@@ -127,6 +167,7 @@ extractor = ClassicalExtractor(
     args_candidate_weighting={"window": 2, "use_stems": False},
     flat_output=True,
     use_order=False,
+    logger=logger,
 )
 keyphrases = extractor.get_keyphrase(input_text=input_text, top_n_phrases=30)
 print("YAKE")
