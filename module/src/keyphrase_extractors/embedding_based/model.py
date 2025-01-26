@@ -206,7 +206,7 @@ class JapanesePhraseRankingModel:
 
     def _add_source_text(self, source_text: str, target: str) -> str:
         _target = re.sub(r"\s+", " ", target).strip()
-        return f"次の本文における「{_target}」の意味\n" f"本文：\n{source_text.strip()}"
+        return f"次の本文における「{_target}」の意味\n本文：\n{source_text.strip()}"
 
     def _extract_sentences(
         self, docs: list[str], sentences: list[list[str]]
