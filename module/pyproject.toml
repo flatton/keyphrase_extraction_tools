@@ -16,8 +16,7 @@ keybert = "^0.8.5"
 sentencepiece = "^0.2.0"
 fugashi = "^1.4.0"
 unidic-lite = "^1.0.8"
-# numpy = "1.26.4"
-# protobuf = "^5.29.0"
+scipy-stubs = "^1.15.1.0"
 
 [build-system]
 requires = ["poetry-core"]
