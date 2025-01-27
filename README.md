@@ -9,7 +9,7 @@
 日本語用キーフレーズ抽出ツールの詳細は [`/module/README.md`](module/README.md) 、評価用データセットの詳細は [`/dataset/evaluation/README.md`](dataset/evaluation/README.md) をご参照ください。
 
 ## License
-日本語用キーフレーズ抽出ツールおよび評価用データセットのライセンスは [LICENSE](LICENSE) を参照ください。
+日本語用キーフレーズ抽出ツールおよび評価用データセットのライセンスは [LICENSE.md](LICENSE.md) を参照ください。
 
 <a name="Citation"/></a>
 ## Citation
