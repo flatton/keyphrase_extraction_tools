@@ -14,13 +14,14 @@
 <a name="Citation"/></a>
 ## Citation
 日本語用キーフレーズ抽出ツールまたは評価用データセットを引用する際は、以下の情報をご記載ください。
+[予稿](https://www.anlp.jp/proceedings/annual_meeting/2025/pdf_dir/Q10-24.pdf)
 
 ```
 @inproceedings{japanese_keyphrase_extraction,
   title={埋め込みモデルベースの教師なしキーフレーズ抽出における長文に対する抽出精度の改善},
   author={藤原 知樹},
   booktitle={言語処理学会第31回年次大会},
-  pages={},
+  pages={4310-4315},
   year={2025}
 }
 ```
